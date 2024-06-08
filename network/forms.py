@@ -3,7 +3,6 @@ from .models import Posts
 
 
 
-
 #New Post
 class PostForm(forms.ModelForm):
     class Meta:

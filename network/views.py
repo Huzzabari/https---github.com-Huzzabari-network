@@ -1,32 +1,35 @@
+from django.core.paginator import Paginator
 from django.contrib import messages
 from .forms import PostForm, EditForm
-from .models import Profile, Posts, User
+from .models import Profile, Posts, User 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import User
 
 
+@login_required(login_url='login')
 def index(request):
     form1=PostForm()
-    if request.method=="GET":
-        posts=Posts.objects.all()
-        return render(request, "network/index.html", {'form1':form1, 'posts':posts})
-     
-    elif request.method=="POST":
-        if 'form1' in request.POST:
-            form1 = PostForm(request.POST)  
-            if form1.is_valid():
-                post = form1.save(commit=False)
-                post.user = request.user
-                post.save()
-            else:
-                messages.warning(request, 'Issue with form!')
+    if request.method=="POST":
+        form1 = PostForm(request.POST)  
+        if form1.is_valid():
+            post = form1.save(commit=False)
+            post.user = request.user
+            post.save()
+            messages.success(request, 'Post created successfully!')
+            return redirect('index')
+        else:
+            messages.warning(request, 'Issue with form!')
+    
     posts=Posts.objects.all()
-    return render(request, "network/index.html", {'form1':form1, 'posts':posts})                          
+    p=Paginator(posts,10)
+    page_number=request.GET.get('page')
+    page_obj=p.get_page(page_number)
+    return render(request, "network/index.html", {'form1':form1, 'page_obj':page_obj})                          
       
 
 
