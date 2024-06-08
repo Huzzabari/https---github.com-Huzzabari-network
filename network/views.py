@@ -1,3 +1,6 @@
+from django.contrib import messages
+from .forms import PostForm, EditForm
+from .models import Profile, Posts, User
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -8,7 +11,44 @@ from .models import User
 
 
 def index(request):
-    return render(request, "network/index.html")
+    form1=PostForm()
+    if request.method=="GET":
+        posts=Posts.objects.all()
+        return render(request, "network/index.html", {'form1':form1, 'posts':posts})
+     
+    elif request.method=="POST":
+        if 'form1' in request.POST:
+            form1 = PostForm(request.POST)  
+            if form1.is_valid():
+                post = form1.save(commit=False)
+                post.user = request.user
+                post.save()
+            else:
+                messages.warning(request, 'Issue with form!')
+    posts=Posts.objects.all()
+    return render(request, "network/index.html", {'form1':form1, 'posts':posts})                          
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def login_view(request):

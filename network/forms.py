@@ -1,27 +1,21 @@
 from django import forms
+from .models import Posts
 
 
 
 
 #New Post
-class PostForm(forms.Form):
-    #post text
-    post_text=forms.CharField(label="post", max_length=130, widget=forms.Textarea)
-    #post time and date
-    post_date= forms.DateTimeField()
-
-
-
-
-
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Posts
+        fields = ['post_title', 'post_text']
 
 
 
 #Edit Post
-class EditForm(forms.Form):
-    #post text
-    post_text=forms.CharField(label="post", max_length=130, widget=forms.Textarea)
-    #post time and date
-    post_date= forms.DateTimeField()
+class EditForm(forms.ModelForm):
+    class Meta:
+        model = Posts
+        fields = ['post_title', 'post_text']
 
 
