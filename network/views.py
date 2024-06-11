@@ -10,7 +10,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 
-#need most recent posts first!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 @login_required(login_url='login')  #requires user to be logged in to post and view forum
 def index(request):
     form1=PostForm()                  #request post form
