@@ -2,7 +2,7 @@
 
 {% block body %}
 
-{% if messages %}
+{% if messages %}         <!-- Messages in case we need them. gives feedback on posts submission-->
         <ul class="messages">
             {% for message in messages %}
                 <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
@@ -10,7 +10,7 @@
         </ul>
 {% endif %}
 
-<form method="POST">
+<form method="POST" class="wade_form">               <!-- Post form of form1 as a paragraph, also uses csrf token-->
     {% csrf_token %}
     {{ form1.as_p }}
     <button type="submit">Post</button>
@@ -18,13 +18,14 @@
 
 {% for page in page_obj %}
 <div class="Post">
-<h1>Title: {{page.post_title}}</h1>
-<p>{{page.post_text}}</p>
-<h6>Date: {{page.post_date}}</h6>
-<h5>User: <a href="{% url 'profile' user.id %}">{{ user.username }}</a></h5>  <!-- FIX THIS-->
-<h5>Likes: {{page.likes}}</h5>
+<h1>Title: {{page.post_title}}</h1><!-- page post title-->
+<p>{{page.post_text}}</p><!-- page post text-->
+<h6>Date: {{page.post_date}}</h6> <!-- page post date/time-->
+<h5>User: <a href="{% url 'profile' page.user.id %}">{{ page.user.username }}</a></h5>  <!-- accesses user tied to User Model then gets username for each post on page-->
+<h5>Likes: {{page.likes_count}}</h5> <!-- page likes-->
 </div>
 {% endfor %}
+
 <nav aria-label="Page navigation">
     <ul class="pagination">
         {% if page_obj.paginator.num_pages > 0 %}

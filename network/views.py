@@ -26,7 +26,10 @@ def index(request):
             messages.warning(request, 'Issue with form!') #issue a warning if it doesn't work
     
     posts=Posts.objects.all()        # gets all posts and paginates them when returning a render of the index view
-    p=Paginator(posts,10)
+    posts=posts.order_by("-post_date") # order posts by date
+    for post in posts:                     # loop through all ordered posts and add a temporary attribute of the number of likes per post
+        post.likes_counts=post.likes.count()
+    p=Paginator(posts,10)            # paginating
     page_number=request.GET.get('page')
     page_obj=p.get_page(page_number)      
     return render(request, "network/index.html", {'form1':form1, 'page_obj':page_obj})                          
