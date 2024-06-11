@@ -6,31 +6,47 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 
-
-@login_required(login_url='login')
+#need most recent posts first!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+@login_required(login_url='login')  #requires user to be logged in to post and view forum
 def index(request):
-    form1=PostForm()
-    if request.method=="POST":
+    form1=PostForm()                  #request post form
+    if request.method=="POST":         #if post form submitted validate form 
         form1 = PostForm(request.POST)  
         if form1.is_valid():
-            post = form1.save(commit=False)
-            post.user = request.user
-            post.save()
+            post = form1.save(commit=False)  #if form is valid then save info but don't commit
+            post.user = request.user          #add user to the save post
+            post.save()                      #submit post
             messages.success(request, 'Post created successfully!')
-            return redirect('index')
+            return redirect('index')         #redirect
         else:
-            messages.warning(request, 'Issue with form!')
+            messages.warning(request, 'Issue with form!') #issue a warning if it doesn't work
     
-    posts=Posts.objects.all()
+    posts=Posts.objects.all()        # gets all posts and paginates them when returning a render of the index view
     p=Paginator(posts,10)
     page_number=request.GET.get('page')
-    page_obj=p.get_page(page_number)
+    page_obj=p.get_page(page_number)      
     return render(request, "network/index.html", {'form1':form1, 'page_obj':page_obj})                          
-      
+
+# Display number of followers. number of people that the user follows. Display all posts of profile user in reverser chrnonological order.  Display follow and unfollow button if user is not same user.
+def profile(request, user_id):     # profile page
+    if request.method=="POST":
+        pass
+
+
+    viewer = request.user                 # gets logged in users info and profile
+    viewer_profile = get_object_or_404(Profile, user=viewer)
+    user = get_object_or_404(User, id=user_id) # gets user and profile of user clicked on
+    profile = get_object_or_404(Profile, user=user)
+    return render(request, "network/profile.html", {'viewer_profile':viewer_profile, 'profile':profile})   # renders profile.html of the user
+
+
+def following(request): # following link
+     # paginate the page as well with following posts
+    return render(request, "network/following.html")
 
 
 
@@ -96,6 +112,8 @@ def register(request):
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
+            profile = Profile(user=user)  # create profile with user 
+            profile.save()
         except IntegrityError:
             return render(request, "network/register.html", {
                 "message": "Username already taken."

@@ -21,7 +21,7 @@
 <h1>Title: {{page.post_title}}</h1>
 <p>{{page.post_text}}</p>
 <h6>Date: {{page.post_date}}</h6>
-<h5>User: {{page.user}}</h5>
+<h5>User: <a href="{% url 'profile' user.id %}">{{ user.username }}</a></h5>  <!-- FIX THIS-->
 <h5>Likes: {{page.likes}}</h5>
 </div>
 {% endfor %}
