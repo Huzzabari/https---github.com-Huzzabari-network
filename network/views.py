@@ -34,6 +34,7 @@ def index(request):
     return render(request, "network/index.html", {'form1':form1, 'page_obj':page_obj})                          
 
 # Display number of followers. number of people that the user follows. Display all posts of profile user in reverser chrnonological order.  Display follow and unfollow button if user is not same user.
+@login_required(login_url='login')  #requires user to be logged in to post and view forum
 def profile(request, user_id):     # profile page
     viewer = request.user                 # gets logged in users info and profile
     viewer_profile = get_object_or_404(Profile, user=viewer)
@@ -65,6 +66,7 @@ def profile(request, user_id):     # profile page
     return render(request, "network/profile.html", {'viewer_profile':viewer_profile, 'profile':profile, 'page_obj':page_obj, 'profile_followers': profile_followers, 'profile_following': profile_following})   # renders profile.html of the user
 
 
+@login_required(login_url='login')  #requires user to be logged in to post and view forum
 def following(request, user_id): # following link
     viewer = request.user                 # gets logged in users info and profile
     viewer_profile = get_object_or_404(Profile, user=viewer)
