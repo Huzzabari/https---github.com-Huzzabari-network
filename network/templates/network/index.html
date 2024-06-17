@@ -23,6 +23,9 @@
 <h6>Date: {{page.post_date}}</h6> <!-- page post date/time-->
 <h5>User: <a href="{% url 'profile' page.user.id %}">{{ page.user.username }}</a></h5>  <!-- accesses user tied to User Model then gets username for each post on page-->
 <h5>EDIT!</h5>  <!-- Need to add edit link-->
+<div class="heart_container">
+    <i class="fa-regular fa-heart"></i>
+</div>
 <h5>Likes: {{page.likes_count}}</h5> <!-- page likes-->
 </div>
 {% endfor %}

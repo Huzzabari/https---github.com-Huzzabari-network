@@ -2,11 +2,31 @@
 
 {% block body %}
 <h1>
-    Hi {{profile.user}}
+    {{profile.user| upper}}
 </h1>
-<h5>followers</h5> <!-- number of followers-->
-<h5>following</h5><!-- number of people user follows-->
-<h5>Posts</h5> <!-- for loop of posts in reverse chronological order-->
+{% if viewer_profile.user != profile.user%}
+{% if viewer_profile.user not in profile.following.all %}
+<form name="form" method="post">
+    {% csrf_token %}
+    {% if viewer_profile.user in profile.followers.all %}
+        <button type="submit">Unfollow</button>
+    {% else %}
+        <button type="submit">Follow</button>
+    {% endif %}
+</form>
+{% endif %}
+{% endif %}
+{% if profile_followers > 0 %}
+<h5>followers: {{profile_followers}}</h5> <!-- number of followers-->
+{% else %}
+<h5>followers: 0</h5> <!-- number of followers is zero-->
+{% endif %}
+{% if profile_following > 0 %}
+<h5>following: {{profile_following}}</h5><!-- number of people user follows-->
+{% else %}
+<h5>following: 0 </h5> <!-- number following is zero-->
+{% endif %}
+<h5>Posts:</h5> <!-- for loop of posts in reverse chronological order-->
 {% for page in page_obj %}
 <div class="Post">
 <h1>Title: {{page.post_title}}</h1><!-- page post title-->
@@ -14,7 +34,10 @@
 <h6>Date: {{page.post_date}}</h6> <!-- page post date/time-->
 <h5>User: <a href="{% url 'profile' page.user.id %}">{{ page.user.username }}</a></h5>  <!-- accesses user tied to User Model then gets username for each post on page-->
 <h5>EDIT!</h5>  <!-- Need to add edit link-->
-<h5>Likes: {{page.likes_count}}</h5> <!-- page likes-->
+<div class="heart_container">
+    <i class="fa-regular fa-heart"></i>
+</div>
+<h5>: {{page.likes_count}}</h5> <!-- page likes-->
 </div>
 {% endfor %}
 <nav aria-label="Page navigation">

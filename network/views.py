@@ -35,14 +35,25 @@ def index(request):
 
 # Display number of followers. number of people that the user follows. Display all posts of profile user in reverser chrnonological order.  Display follow and unfollow button if user is not same user.
 def profile(request, user_id):     # profile page
-    if request.method=="POST":
-        pass
-
-
     viewer = request.user                 # gets logged in users info and profile
     viewer_profile = get_object_or_404(Profile, user=viewer)
     user = get_object_or_404(User, id=user_id) # gets user and profile of user clicked on
     profile = get_object_or_404(Profile, user=user)
+    profile_followers= profile.followers.count()
+    profile_following= profile.following.count()
+
+    if request.method=="POST":           # Post method to check if users are follownig or followers before submitting requests
+        if viewer_profile.user in profile.followers.all():
+            viewer_profile.following.remove(profile.user)
+            profile.followers.remove(viewer_profile.user)
+            
+        else:
+            viewer_profile.following.add(profile.user)
+            profile.followers.add(viewer_profile.user)
+            
+        viewer_profile.save()
+        profile.save()
+        return redirect('profile', user_id=user_id)    
 
     posts=Posts.objects.filter(user=user) # filter posts by user referenced by profile user above
     posts=posts.order_by("-post_date") # order posts by date
@@ -51,7 +62,7 @@ def profile(request, user_id):     # profile page
     p=Paginator(posts,10)            # paginating
     page_number=request.GET.get('page')
     page_obj=p.get_page(page_number)      
-    return render(request, "network/profile.html", {'viewer_profile':viewer_profile, 'profile':profile, 'page_obj':page_obj})   # renders profile.html of the user
+    return render(request, "network/profile.html", {'viewer_profile':viewer_profile, 'profile':profile, 'page_obj':page_obj, 'profile_followers': profile_followers, 'profile_following': profile_following})   # renders profile.html of the user
 
 
 def following(request): # following link

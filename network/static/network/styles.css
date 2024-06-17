@@ -17,3 +17,15 @@
     padding-bottom: 10px;
     padding-top: 10px;
 }
+
+
+
+
+
+.fa-heart:hover{                 /* heart hover color */
+    color:rgb(127, 15, 212);
+}
+
+.fa-heart {
+    --fa-primary-color: red;
+}
