@@ -1,9 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Use buttons to toggle between views
-    //document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
-   
-   
+    document.querySelectorAll('.fa-regular.fa-heart').forEach(function(like)
+    {
+      like.addEventListener('click', function(){
+        console.log('you have clicked me');
+      });
+    }); 
+
+
   });
   
 

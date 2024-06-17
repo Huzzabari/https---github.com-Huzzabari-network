@@ -65,9 +65,27 @@ def profile(request, user_id):     # profile page
     return render(request, "network/profile.html", {'viewer_profile':viewer_profile, 'profile':profile, 'page_obj':page_obj, 'profile_followers': profile_followers, 'profile_following': profile_following})   # renders profile.html of the user
 
 
-def following(request): # following link
-     # paginate the page as well with following posts
-    return render(request, "network/following.html")
+def following(request, user_id): # following link
+    viewer = request.user                 # gets logged in users info and profile
+    viewer_profile = get_object_or_404(Profile, user=viewer)
+    posts_list=Posts.objects.none()
+    for following in viewer_profile.following.all():
+        post=Posts.objects.filter(user=following)
+        posts_list=posts_list.union(post)
+
+    posts=posts_list
+    if posts: 
+        posts=posts.order_by("-post_date") # order posts by date
+        for post in posts:                     # loop through all ordered posts and add a temporary attribute of the number of likes per post
+            post.likes_counts=post.likes.count()
+        p=Paginator(posts,10)            # paginating
+        page_number=request.GET.get('page')
+        page_obj=p.get_page(page_number)    
+        # paginate the page as well with following posts
+        return render(request, "network/following.html",{'viewer_profile':viewer_profile, 'page_obj':page_obj})   # renders profile.html of the user
+    else:
+        return redirect('index')
+
 
 
 

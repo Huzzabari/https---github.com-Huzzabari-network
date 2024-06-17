@@ -2,5 +2,46 @@
 
 {% block body %}
 
+{% if page_obj %}
+{% for page in page_obj %}
+<div class="Post">
+<h1>Title: {{page.post_title}}</h1><!-- page post title-->
+<p>{{page.post_text}}</p><!-- page post text-->
+<h6>Date: {{page.post_date}}</h6> <!-- page post date/time-->
+<h5>User: <a href="{% url 'profile' page.user.id %}">{{ page.user.username }}</a></h5>  <!-- accesses user tied to User Model then gets username for each post on page-->
+<h5>EDIT LINK GOES HERE</h5>  <!-- Need to add edit link-->
+<div class="heart_container">
+    <i class="fa-regular fa-heart"></i>
+</div>
+<h5>Likes: {{post.likes_counts}}</h5> <!-- page likes-->
+</div>
+{% endfor %}
+{% else %}
+    <p>No posts to display.</p>
+{% endif %}
 
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        {% if page_obj.paginator.num_pages > 0 %}
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a href="?page=1" class="page-link">&laquo; first</a></li>
+            <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">previous</a></li>
+        {% endif %}
+        <li>  
+        <span class="pagination">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+        </li>
+      
+
+        {% if page_obj.has_next %}
+        <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">next</a></li>
+        <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">last &raquo;</a></li>
+
+        {% endif %}
+        {% else %}
+        <H1> No pages to display</H1>
+        {% endif %}
+    </ul>
+    </nav>
 {% endblock %}
