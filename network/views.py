@@ -8,6 +8,9 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 @login_required(login_url='login')  #requires user to be logged in to post and view forum
@@ -89,7 +92,20 @@ def following(request, user_id): # following link
         return redirect('index')
 
 
-
+@csrf_exempt
+def update_likes(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user_id = data['likes']
+        post_id = data['post']
+        user = User.objects.get(id=user_id)
+        post = Posts.objects.get(id=post_id)
+        if user in post.likes.all():
+            post.likes.remove(user)
+        else:
+            post.likes.add(user)
+        post.save()
+        return JsonResponse({'message': 'Success!'})
 
 
 
