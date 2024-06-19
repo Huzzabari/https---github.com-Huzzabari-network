@@ -105,7 +105,8 @@ def update_likes(request):
         else:
             post.likes.add(user)
         post.save()
-        return JsonResponse({'message': 'Success!'})
+        return JsonResponse({'new_likes_count': post.likes.count()})
+        
 
 
 

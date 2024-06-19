@@ -12,7 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
           })
       })
       .then(response => response.json())
-      .then(data => console.log(data));
+      .then(data => {
+      console.log(data);
+      document.querySelector(`#likes-count-${post}`).innerHTML = data.new_likes_count;
+      });
       });
     }); 
   });
