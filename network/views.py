@@ -92,20 +92,20 @@ def following(request, user_id): # following link
         return redirect('index')
 
 
-@csrf_exempt
-def update_likes(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        user_id = data['likes']
-        post_id = data['post']
-        user = User.objects.get(id=user_id)
-        post = Posts.objects.get(id=post_id)
-        if user in post.likes.all():
+@csrf_exempt  #using javascript so exempt 
+def update_likes(request):      # update likes view
+    if request.method == 'POST':        # if method is post
+        data = json.loads(request.body)     # reques the body and store ni variable data
+        user_id = data['likes']    # store the user that liked the post 
+        post_id = data['post']      # store the user who made the post
+        user = User.objects.get(id=user_id)  # get user object based on user id
+        post = Posts.objects.get(id=post_id) # get post object based on the post id
+        if user in post.likes.all():   # if the user is in any of the post likes then remove the user
             post.likes.remove(user)
         else:
-            post.likes.add(user)
-        post.save()
-        return JsonResponse({'new_likes_count': post.likes.count()})
+            post.likes.add(user)     # otherwise add user
+        post.save() #save to update this
+        return JsonResponse({'new_likes_count': post.likes.count()})     # return the new likes count by checking the post object.likes and using the count method.
         
 
 

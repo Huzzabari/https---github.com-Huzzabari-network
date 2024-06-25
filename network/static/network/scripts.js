@@ -1,20 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.heartcontainer').forEach(function(like)
     {
-      like.addEventListener('click', function(){
-        let user = like.getAttribute('data-user');
-        let post= like.getAttribute('data-post')
-        fetch('/update_likes/', {
+      like.addEventListener('click', function(){      // when heart clicked on. function starts
+        let user = like.getAttribute('data-user');     // gets the user info from the data attribute
+        let post= like.getAttribute('data-post')        // gets the post info from the data attribute
+        fetch('/update_likes/', {                       // uses the update likes view and does a post request
           method: 'POST', 
-          body: JSON.stringify({
-              'likes': user, // replace with your actual data
-              'post': post
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({                            // makes the body 
+              'likes': user, // likes key value pair is the user id clicking the like button
+              'post': post   // post key value pair is the post id
           })
       })
       .then(response => response.json())
       .then(data => {
-      console.log(data);
-      document.querySelector(`#likes-count-${post}`).innerHTML = data.new_likes_count;
+      document.querySelector(`#likes-count-${post}`).innerHTML = data.new_likes_count;  // update like count
       });
       });
     }); 
