@@ -95,18 +95,28 @@ def following(request, user_id): # following link
 @csrf_exempt  #using javascript so exempt 
 def update_likes(request):      # update likes view
     if request.method == 'POST':        # if method is post
+        heart=False
         data = json.loads(request.body)     # reques the body and store ni variable data
         user_id = data['likes']    # store the user that liked the post 
         post_id = data['post']      # store the user who made the post
-        user = User.objects.get(id=user_id)  # get user object based on user id
-        post = Posts.objects.get(id=post_id) # get post object based on the post id
+        try:
+            user = User.objects.get(id=user_id)  # get user object based on user id
+            post = Posts.objects.get(id=post_id) # get post object based on the post id
+        except (User.DoesNotExist, Posts.DoesNotExist):
+            messages.warning(request, 'User or Post doesnt exist!')
+            return redirect('index')
+        # Handle the case where the user or post does not exist
+
         if user in post.likes.all():   # if the user is in any of the post likes then remove the user
             post.likes.remove(user)
+            heart=True
         else:
             post.likes.add(user)     # otherwise add user
+            heart=False
         post.save() #save to update this
-        return JsonResponse({'new_likes_count': post.likes.count()})     # return the new likes count by checking the post object.likes and using the count method.
-        
+        return JsonResponse({'new_likes_count': post.likes.count(), 'heart':heart})     # return the new likes count by checking the post object.likes and using the count method.
+    else:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
 
 
 

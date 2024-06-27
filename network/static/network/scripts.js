@@ -16,6 +16,13 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .then(response => response.json())
       .then(data => {
+        let heart=data.heart;
+        let like = document.querySelector(".heartcontainer i");
+        if (heart) {
+          like.className = 'fa-regular fa-heart';
+      } else {
+          like.className = 'fa-solid fa-heart';
+      }
       document.querySelector(`#likes-count-${post}`).innerHTML = data.new_likes_count;  // update like count
       });
       });
