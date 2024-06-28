@@ -16,23 +16,24 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .then(response => response.json())
       .then(data => {
-        let heart=data.heart;
-        let hearticon = like.querySelector("i");
-        if (heart) {
+        let heart=data.heart;     // Let the true or false from the data saved to heart equal heart
+        let hearticon = like.querySelector("i");       // hearticon is <i>
+        if (heart) {     // If true make hearticon <i> class change to regular heart.
           hearticon.className = 'fa-regular fa-heart';
       } else {
-          hearticon.className = 'fa-solid fa-heart';
+          hearticon.className = 'fa-solid fa-heart';    // else solid heart
       }
       document.querySelector(`#likes-count-${post}`).innerHTML = data.new_likes_count;  // update like count
       });
       });
     }); 
 
+    // Trying to edt posts
     document.querySelectorAll('.edit').forEach(function(button)
     {
-      button.addEventListener('click', function(){      // when heart clicked on. function starts
+      button.addEventListener('click', function(){      
         var postId=this.getAttribute('data-post_id');
-        fetch(`/edit/${postId}`, {                       // uses the update likes view and does a post request
+        fetch(`/edit/${postId}`, {                       
           method: 'GET', 
        
         })
