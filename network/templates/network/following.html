@@ -10,8 +10,12 @@
 <h6>Date: {{page.post_date}}</h6> <!-- page post date/time-->
 <h5>User: <a href="{% url 'profile' page.user.id %}">{{ page.user.username }}</a></h5>  <!-- accesses user tied to User Model then gets username for each post on page-->
 <h5>EDIT LINK GOES HERE</h5>  <!-- Need to add edit link-->
-<div class="heartcontainer" data-user="{{page.user.id}}" data-post="{{page.id}}">
-    <i class="fa-regular fa-heart"></i>
+<div class="heartcontainer" data-user="{{request.user.id}}" data-post="{{page.id}}">
+    {% if request.user.id in page.likers %}
+    <i class="fa-solid fa-heart"></i>
+{% else %}
+    <i class="fa-regular fa-heart"></i>    
+{% endif %}
 </div>
 <h5>Likes:</h5>
 <h5 id="likes-count-{{page.id}}">{{page.likes.count}}</h5> <!-- page likes-->

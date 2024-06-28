@@ -17,17 +17,32 @@ document.addEventListener('DOMContentLoaded', function () {
       .then(response => response.json())
       .then(data => {
         let heart=data.heart;
-        let like = document.querySelector(".heartcontainer i");
+        let hearticon = like.querySelector("i");
         if (heart) {
-          like.className = 'fa-regular fa-heart';
+          hearticon.className = 'fa-regular fa-heart';
       } else {
-          like.className = 'fa-solid fa-heart';
+          hearticon.className = 'fa-solid fa-heart';
       }
       document.querySelector(`#likes-count-${post}`).innerHTML = data.new_likes_count;  // update like count
       });
       });
     }); 
+
+    document.querySelectorAll('.edit').forEach(function(button)
+    {
+      button.addEventListener('click', function(){      // when heart clicked on. function starts
+        var postId=this.getAttribute('data-post_id');
+        fetch(`/edit/${postId}`, {                       // uses the update likes view and does a post request
+          method: 'GET', 
+       
+        })
+     });
+    });
   });
+
+
+
+  
   
 
 //like and unlike post

@@ -17,13 +17,21 @@
 </form>
 
 {% for page in page_obj %}
+<div class="Post">
 <h1>Title: {{page.post_title}}</h1><!-- page post title-->
 <p>{{page.post_text}}</p><!-- page post text-->
 <h6>Date: {{page.post_date}}</h6> <!-- page post date/time-->
 <h5>User: <a href="{% url 'profile' page.user.id %}">{{ page.user.username }}</a></h5>  <!-- accesses user tied to User Model then gets username for each post on page-->
 <h5>EDIT LINK GOES HERE</h5>  <!-- Need to add edit link-->
-<div class="heartcontainer" data-user="{{page.user.id}}" data-post="{{page.id}}">  <!-- This div is used to handle liking the post. It contains data attributes for the user ID and post ID.-->
-    <i class="fa-regular fa-heart"></i>
+{% if page.user.id == request.user.id %}
+<button class="edit" data-post_id="{{page.id}}">CLICK ME TO EDIT</button>
+{% endif %}
+<div class="heartcontainer" data-user="{{request.user.id}}" data-post="{{page.id}}">
+    {% if request.user.id in page.likers %}
+    <i class="fa-solid fa-heart"></i>
+{% else %}
+    <i class="fa-regular fa-heart"></i>    
+{% endif %}
 </div>
 <h5>Likes:</h5>
 <h5 id="likes-count-{{page.id}}">{{page.likes.count}}</h5> <!-- page likes-->

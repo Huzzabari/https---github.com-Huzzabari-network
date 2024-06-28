@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.template.loader import render_to_string
 from django.contrib import messages
 from .forms import PostForm, EditForm
 from .models import Profile, Posts, User 
@@ -31,9 +32,10 @@ def index(request):
     posts=posts.order_by("-post_date") # order posts by date
     for post in posts:                     # loop through all ordered posts and add a temporary attribute of the number of likes per post
         post.likes_counts=post.likes.count()
+        post.likers=[user.id for user in post.likes.all()]
     p=Paginator(posts,10)            # paginating
     page_number=request.GET.get('page')
-    page_obj=p.get_page(page_number)      
+    page_obj=p.get_page(page_number)    
     return render(request, "network/index.html", {'form1':form1, 'page_obj':page_obj})                          
 
 # Display number of followers. number of people that the user follows. Display all posts of profile user in reverser chrnonological order.  Display follow and unfollow button if user is not same user.
@@ -63,6 +65,7 @@ def profile(request, user_id):     # profile page
     posts=posts.order_by("-post_date") # order posts by date
     for post in posts:                     # loop through all ordered posts and add a temporary attribute of the number of likes per post
         post.likes_counts=post.likes.count()
+        post.likers=[user.id for user in post.likes.all()]
     p=Paginator(posts,10)            # paginating
     page_number=request.GET.get('page')
     page_obj=p.get_page(page_number)      
@@ -83,6 +86,7 @@ def following(request, user_id): # following link
         posts=posts.order_by("-post_date") # order posts by date
         for post in posts:                     # loop through all ordered posts and add a temporary attribute of the number of likes per post
             post.likes_counts=post.likes.count()
+            post.likers=[user.id for user in post.likes.all()]
         p=Paginator(posts,10)            # paginating
         page_number=request.GET.get('page')
         page_obj=p.get_page(page_number)    
@@ -96,7 +100,7 @@ def following(request, user_id): # following link
 def update_likes(request):      # update likes view
     if request.method == 'POST':        # if method is post
         heart=False
-        data = json.loads(request.body)     # reques the body and store ni variable data
+        data = json.loads(request.body)     # reques the body and store in variable data
         user_id = data['likes']    # store the user that liked the post 
         post_id = data['post']      # store the user who made the post
         try:
@@ -120,6 +124,23 @@ def update_likes(request):      # update likes view
 
 
 
+@csrf_exempt  #using javascript so exempt 
+def edit_post(request, post_id):      # update likes view
+    if request.method == 'GET':        # if method is get
+        post= get_object_or_404(Posts, id=post_id)
+        form=PostForm(instance=post)
+        return render(request, 'network/form_template.html', {'form': form})
+     
+    elif request.method == 'POST':
+        post = get_object_or_404(Posts, id=post_id)
+        form = PostForm(request.POST, instance=post)
+
+    if form.is_valid():
+        form.save()
+        return JsonResponse({'message': 'Post updated successfully'})
+    else:
+        return JsonResponse({'error': 'Invalid form data'}, status=400)      
+   
 
 
 
