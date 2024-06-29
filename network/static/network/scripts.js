@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
           hearticon.className = 'fa-solid fa-heart';    // else solid heart
       }
-      document.querySelector(`#likes-count-${post}`).innerHTML = data.new_likes_count;  // update like count
+      document.querySelector(`#likes-count-${post}`).innerHTML = data.new_likes_count;  // update like count based on post id.
       });
       });
     }); 

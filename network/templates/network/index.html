@@ -15,6 +15,7 @@
     {{ form1.as_p }}
     <button type="submit">Post</button>
 </form>
+<div class="text-area">This will be where text area is.</div>
 
 {% for page in page_obj %}
 <div class="Post">
@@ -22,10 +23,15 @@
 <p>{{page.post_text}}</p><!-- page post text-->
 <h6>Date: {{page.post_date}}</h6> <!-- page post date/time-->
 <h5>User: <a href="{% url 'profile' page.user.id %}">{{ page.user.username }}</a></h5>  <!-- accesses user tied to User Model then gets username for each post on page-->
+
+
+
 <h5>EDIT LINK GOES HERE</h5>  <!-- Need to add edit link-->
-{% if page.user.id == request.user.id %}
-<button class="edit" data-post_id="{{page.id}}">CLICK ME TO EDIT</button>
+{% if page.user.id == request.user.id %}  <!-- If the user of the post is the same as the user viewing it. then can see the edit button-->
+<button  class="edit" data-post_id="{{page.id}}">CLICK ME TO EDIT</button> <!-- info for the post id on this edit button. -->
 {% endif %}
+
+
 <div class="heartcontainer" data-user="{{request.user.id}}" data-post="{{page.id}}">
     {% if request.user.id in page.likers %}
     <i class="fa-solid fa-heart"></i>

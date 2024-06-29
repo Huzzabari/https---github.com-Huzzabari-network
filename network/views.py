@@ -110,7 +110,6 @@ def update_likes(request):      # update likes view
             messages.warning(request, 'User or Post doesnt exist!')
             return redirect('index')
         # Handle the case where the user or post does not exist
-
         if user in post.likes.all():   # if the user is in any of the post likes then remove the user
             post.likes.remove(user)
             heart=True
