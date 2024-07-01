@@ -32,13 +32,31 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.edit').forEach(function(button)
     {
       button.addEventListener('click', function(){      
-        var postId=this.getAttribute('data-post_id');
-        fetch(`/edit/${postId}`, {                       
-          method: 'GET', 
-       
-        })
+        var postId=this.getAttribute('data-post_id');           
+        fetch(`/edit/${postId}`)
+        .then(response => response.json())
+        .then(data => {
+        textarea=document.createElement('textarea');
+        textarea.id = 'myTextarea';
+        textarea.rows = 15;
+        textarea.cols = 60;
+        textarea.placeholder = data.form;
+        document.querySelector(".text-area").append(textarea)
+        newButton=document.createElement('button');
+        newButton.textContent='change';
+        newButton.setAttribute('id', 'change-text');
+        document.querySelector(".text-area").append(newButton);});
      });
     });
+
+
+
+    // submit editted posts
+    document.querySelector('#change-text').forEach(function(button){
+    button.addEventListener('click', function(){
+
+    })
+    })
   });
 
 

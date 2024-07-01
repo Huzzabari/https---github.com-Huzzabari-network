@@ -127,18 +127,18 @@ def update_likes(request):      # update likes view
 def edit_post(request, post_id):      # update likes view
     if request.method == 'GET':        # if method is get
         post= get_object_or_404(Posts, id=post_id)  #get post object based on post_id
-        form=PostForm(instance=post) #make an instance to change the post
-        return render(request, 'network/form_template.html', {'form': form}) #return my template with data from instance
+        form=post.post_text
+        return JsonResponse({'form': form}) #return my template with data from instance
      
-    elif request.method == 'POST':      # if post request for submission
-        post = get_object_or_404(Posts, id=post_id)      # make sure it's the post form instance and we are using post method to submit
-        form = PostForm(request.POST, instance=post)
+   # elif request.method == 'POST':      # if post request for submission
+        #post = get_object_or_404(Posts, id=post_id)      # make sure it's the post form instance and we are using post method to submit
+        #form = PostForm(request.POST, instance=post)
 
-    if form.is_valid():   #if the form submitted is valid, we save it.
-        form.save()
-        return JsonResponse({'message': 'Post updated successfully'})
-    else:
-        return JsonResponse({'error': 'Invalid form data'}, status=400)      
+    #if form.is_valid():   #if the form submitted is valid, we save it.
+        #form.save()
+        #return JsonResponse({'message': 'Post updated successfully'})
+    #else:
+        #return JsonResponse({'error': 'Invalid form data'}, status=400)      
    
 
 
