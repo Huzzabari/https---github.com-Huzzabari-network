@@ -1,9 +1,9 @@
-.Post{
+.post{
     align-content: center;
     align-self: flex-end;
     box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, .2);
     border: 2px solid blue;
-    padding-left: 20px;
+    padding-left: 30px;
     padding-bottom: 10px;
     padding-top: 10px;
 }
@@ -29,3 +29,4 @@
 .fa-heart {
     --fa-primary-color: red;
 }
+

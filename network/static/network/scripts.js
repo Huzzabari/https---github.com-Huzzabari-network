@@ -45,28 +45,41 @@ document.addEventListener('DOMContentLoaded', function () {
         newButton=document.createElement('button');
         newButton.textContent='change';
         newButton.setAttribute('id', 'change-text');
-        document.querySelector(".text-area").append(newButton);});
+        newButton.setAttribute('data-post-id', postId);
+       document.querySelector(".text-area").append(newButton);
+       newButton.addEventListener('click', function(){
+       let postId=newButton.getAttribute('data-post-id');
+       let text=document.querySelector('#myTextarea').value
+       fetch(`/edit/${postId}`,{
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'postId': postId,
+          'text':text
+        })
+      })
+        .then(response => response.json())
+        .then(result => {
+        console.log(result.data.text);
+        let postDiv=document.querySelector(`div[data-post-id="${postId}"]`)
+       // console.log(postDiv);
+        let pElement=postDiv.querySelector('p');
+        //console.log(pElement);
+        pElement.textContent=result.data.text;
+        let removeDiv=document.querySelector('#myTextarea');
+        removeDiv.remove();
+        newButton.remove();
+      })
+    });
+    });
      });
+    }); 
     });
 
 
 
     // submit editted posts
-    document.querySelector('#change-text').forEach(function(button){
-    button.addEventListener('click', function(){
-
-    })
-    })
-  });
-
-
-
-  
-  
-
-//like and unlike post
-
-//edit post
-
-
-  
+   
+ 

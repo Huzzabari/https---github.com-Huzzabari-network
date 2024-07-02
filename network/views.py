@@ -130,16 +130,15 @@ def edit_post(request, post_id):      # update likes view
         form=post.post_text
         return JsonResponse({'form': form}) #return my template with data from instance
      
-   # elif request.method == 'POST':      # if post request for submission
-        #post = get_object_or_404(Posts, id=post_id)      # make sure it's the post form instance and we are using post method to submit
-        #form = PostForm(request.POST, instance=post)
-
-    #if form.is_valid():   #if the form submitted is valid, we save it.
-        #form.save()
-        #return JsonResponse({'message': 'Post updated successfully'})
-    #else:
-        #return JsonResponse({'error': 'Invalid form data'}, status=400)      
-   
+    elif request.method == 'POST':      # if post request for submission
+       data=json.loads(request.body)
+       postId=data['postId']
+       text=data['text']
+       post = get_object_or_404(Posts, id=postId)
+       post.post_text = text
+       post.save()       
+       return JsonResponse({'success': True, "data":data})
+    
 
 
 

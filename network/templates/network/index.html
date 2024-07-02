@@ -18,20 +18,13 @@
 <div class="text-area"></div>   <!-- Where I'm gonna append the text area-->
 
 {% for page in page_obj %}
-<div class="post" data-post-id="{{page.id}}"><h3>PostID: {{page.id}}</h3></div>  <!-- Post id again-->
-<h1>Title: {{page.post_title}}</h1><!-- page post title-->
-<p>{{page.post_text}}</p><!-- page post text-->
-<h6>Date: {{page.post_date}}</h6> <!-- page post date/time-->
-<h5>User: <a href="{% url 'profile' page.user.id %}">{{ page.user.username }}</a></h5>  <!-- accesses user tied to User Model then gets username for each post on page-->
-
-
-
-
-{% if page.user.id == request.user.id %}  <!-- If the user of the post is the same as the user viewing it. then can see the edit button-->
+<div class="post" data-post-id="{{page.id}}"><h1>Title: {{page.post_title}}</h1><!-- page post title-->
+    <p>{{page.post_text}}</p><!-- page post text-->
+    <h6>Date: {{page.post_date}}</h6> <!-- page post date/time-->
+    <h5>User: <a href="{% url 'profile' page.user.id %}">{{ page.user.username }}</a></h5>  <!-- accesses user tied to User Model then gets username for each post on page-->
+    {% if page.user.id == request.user.id %}  <!-- If the user of the post is the same as the user viewing it. then can see the edit button-->
 <button  class="edit" data-post_id="{{page.id}}">CLICK ME TO EDIT</button> <!-- info for the post id on this edit button. -->
 {% endif %}
-
-
 <div class="heartcontainer" data-user="{{request.user.id}}" data-post="{{page.id}}">
     {% if request.user.id in page.likers %}
     <i class="fa-solid fa-heart"></i>
@@ -41,7 +34,7 @@
 </div>
 <h5>Likes:</h5>
 <h5 id="likes-count-{{page.id}}">{{page.likes.count}}</h5> <!-- page likes-->
-</div>
+</div class="endLine">  <!-- Post id again-->
 {% endfor %}
 
 <nav aria-label="Page navigation">
