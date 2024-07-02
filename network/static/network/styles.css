@@ -8,6 +8,12 @@
     padding-top: 10px;
 }
 
+.post p{
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    color:rgb(255, 255, 255);
+}
+
 .wade_form{
     align-content: center;
     align-self: flex-end;
@@ -32,13 +38,35 @@
     background-color: blue;
 }
 
+#change-text{
+    font-size: 30px;
+    background-color: rgb(44, 44, 118); 
+    color: white; 
+}
 
+#change-text:hover{
+    background-color: blue; 
+}
 
 .fa-heart:hover{                 /* heart hover color */
-    color:rgb(127, 15, 212);
+    color:rgb(255, 255, 255);
 }
 
-.fa-heart {
-    --fa-primary-color: red;
+
+
+
+
+.text-area{
+    align-content: center;
+    align-self: flex-end;
+    box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, .2);
+    border: 2px solid blue;
+    padding-left: 30px;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
+
+body{
+    background: linear-gradient(to bottom right, rgb(206, 121, 249),  rgb(207, 172, 225),  rgb(138, 192, 239),  rgb(105, 182, 249))
+}
