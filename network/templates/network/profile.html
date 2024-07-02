@@ -30,7 +30,7 @@
 
 
 {% for page in page_obj %}
-<div class="post" data-post-id="{{page.id}}"><h1>Title: {{page.post_title}}</h1><!-- page post title-->
+<div class="post" data-post-id="{{page.id}}"><h1>{{page.post_title}}</h1><!-- page post title-->
     <p>{{page.post_text}}</p><!-- page post text-->
     <h6>Date: {{page.post_date}}</h6> <!-- page post date/time-->
     <h5>User: <a href="{% url 'profile' page.user.id %}">{{ page.user.username }}</a></h5>  <!-- accesses user tied to User Model then gets username for each post on page-->
