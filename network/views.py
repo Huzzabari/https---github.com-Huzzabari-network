@@ -131,13 +131,13 @@ def edit_post(request, post_id):      # update likes view
         return JsonResponse({'form': form}) #return my template with data from instance
      
     elif request.method == 'POST':      # if post request for submission
-       data=json.loads(request.body)
-       postId=data['postId']
-       text=data['text']
-       post = get_object_or_404(Posts, id=postId)
-       post.post_text = text
-       post.save()       
-       return JsonResponse({'success': True, "data":data})
+       data=json.loads(request.body)   #request the body, which gives me the data
+       postId=data['postId']          # store the postid at the postid
+       text=data['text']              # store the text as text
+       post = get_object_or_404(Posts, id=postId)   #get the instance of the post object tied to the post id
+       post.post_text = text  #update the post text
+       post.save()        #save it
+       return JsonResponse({'success': True, "data":data}) #returrn the response of success and the info for javascript to use
     
 
 

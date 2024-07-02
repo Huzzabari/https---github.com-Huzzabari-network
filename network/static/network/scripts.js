@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         newButton.setAttribute('id', 'change-text');
         newButton.setAttribute('data-post-id', postId);
        document.querySelector(".text-area").append(newButton);
+       textarea.scrollIntoView();
        newButton.addEventListener('click', function(){
        let postId=newButton.getAttribute('data-post-id');
        let text=document.querySelector('#myTextarea').value

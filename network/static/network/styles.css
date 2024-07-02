@@ -18,7 +18,19 @@
     padding-top: 10px;
 }
 
+#button{
+    float: left;
+    margin-left: 200px;
+    width: 150px;
+    height: 50px;
+    font-size: 30px;
+    background-color: rgb(44, 44, 118); 
+    color: white; 
+}
 
+#button:hover{
+    background-color: blue;
+}
 
 
 

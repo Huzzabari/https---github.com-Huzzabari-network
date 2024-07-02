@@ -13,7 +13,7 @@
 <form method="POST" class="wade_form">               <!-- Post form of form1 as a paragraph, also uses csrf token-->
     {% csrf_token %}
     {{ form1.as_p }}
-    <button type="submit">Post</button>
+    <button id="button" type="submit">Post</button>
 </form>
 <div class="text-area"></div>   <!-- Where I'm gonna append the text area-->
 
